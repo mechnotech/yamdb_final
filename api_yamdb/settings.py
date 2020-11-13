@@ -63,9 +63,9 @@ WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": 'django.db.backends.postgresql',
-        "NAME": 'yamdb_db',
-        "USER": 'yamdb_user',
-        "PASSWORD": 'yamdb_pass',
+        "NAME": os.getenv('DB_NAME'),
+        "USER": os.getenv('POSTGRES_USER'),
+        "PASSWORD": os.getenv('POSTGRES_PASSWORD'),
         "HOST": 'db',
         "PORT": '5432',
     }
@@ -101,7 +101,6 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-#  STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 REST_FRAMEWORK = {
