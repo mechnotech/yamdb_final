@@ -1,5 +1,7 @@
 ###### YaMDB Учебный проект Яндекс Практикум
 
+![yamdb_workflow](https://github.com/mechnotech/yamdb_final/workflows/YAMDB-final/badge.svg)
+
 **Описание проекта:**
 Учебная версия API
 использует Django REST API

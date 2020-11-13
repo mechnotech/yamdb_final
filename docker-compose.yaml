@@ -22,7 +22,7 @@ services:
       - database_network
 
   web:
-    build: .
+    image: mechnotech/yamdb_final_web:latest
     container_name: ymdb_web
     restart: always
     volumes:
