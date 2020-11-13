@@ -5,13 +5,13 @@
 **Описание проекта:**
 Учебная версия API
 использует Django REST API
-и базу данных Postgresql
+базу данных Postgresql и вебсервер NGINX
 
 **Для старта с нуля:**
 
-Установить [Docker](https://docs.docker.com/engine/install/ubuntu/) (и docker-compose)
-
-Затем зайти в корневую паку YaMDB и создать файл .env следующего содержания:
+Установка автоматическая при push в репозиторий Github с помощью Github Workflow (см файл yamdb_woekflow.yaml в папке .github/workflow!)
+В нем описаны переменные типа ${{ secrets.SOME_VAR }} - эти переменные надо задать в раздеде settings репозитория Github
+Перед push нужно создать .env файл (в корне репозиторя) следующего содержания:
 
 >DB_ENGINE=django.db.backends.postgresql
 >
@@ -27,17 +27,19 @@
 >
 >SECRET_KEY='######'
 
-Затем там же в паке выполнить `docker-compose up`
+Так же нужен VPS(виртуальный сераер) c доступом по ключу SSH (для теста был выбран Яндекс.Облако)
+После установки, нужно зайти на сервер и в папке yamdb_final отредактировать
+файл .env - согласно настройкам вашего .env
 
-Найти контейнер web (скорее всего будет называться apiyamdb_web_1) `docker container ls` 
-Зайти в контейнер `docker exec -it apiyamdb_web_1 bash`
+Зайти в работающий контейнер c Django `sudo docker exec -it ymdb_web bash`
 и внутри него выполнить:
 
 - `python3 manage.py migrate`
 - `python3 manage.py createsuperuser` (по желанию, чтоб управлять через админку)
 - `python3 manage.py loaddata fixtures.json` - (по желанию, заполняет тестовыми данными базу данных)
+- `exit` - для выхода из контейнера
 
-Сервис будет доступен по основному IP адресу сайта
+Сервис будет доступен по основному IP адресу (или домену) сайта
 
 Админка _IP-adress_/admin
 
