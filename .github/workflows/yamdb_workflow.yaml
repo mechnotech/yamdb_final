@@ -64,7 +64,7 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
           script: |
             sudo apt install -y docker.io docker-compose git
-            sudo git clone https://github.com/mechotech/yamdb_final
+            sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
             cd yamdb_final
             if [ ! -f .env ]; then cp .env.example .env; fi
             sudo docker-compose up -d
