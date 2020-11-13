@@ -64,9 +64,9 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
           script: |
             sudo apt install -y docker.io docker-compose git
-            sudo test -e yamdb_final || git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
+            sudo test -e yamdb_final || sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
             cd yamdb_final
-            sudo test -f .env || cp .env.example .env
+            sudo test -f .env || sudo cp .env.example .env
             sudo docker-compose up -d
           # Если это первый деплой на новую машину 1) установить на ней Docker 2) зачачать образ, запустить контейнер (!) с именем.
 
