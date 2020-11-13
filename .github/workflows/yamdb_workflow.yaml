@@ -65,8 +65,8 @@ jobs:
           script: |
             sudo apt install -y docker.io docker-compose git
             sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
-            cd yamdb_final
-            if [ ! -f .env ]; then cp .env.example .env; fi
+            sudo cd yamdb_final
+            sudo if [ ! -f .env ]; then cp .env.example .env; fi
             sudo docker-compose up -d
           # Если это первый деплой на новую машину 1) установить на ней Docker 2) зачачать образ, запустить контейнер (!) с именем.
 
