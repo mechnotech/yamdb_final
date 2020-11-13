@@ -1,6 +1,6 @@
 ###### YaMDB Учебный проект Яндекс Практикум
 
-![yamdb_workflow](https://github.com/mechnotech/yamdb_final/workflows/YAMDB-final/badge.svg)
+![Workflow check](https://github.com/mechnotech/yamdb_final/workflows/YAMDB-final/badge.svg)
 
 **Описание проекта:**
 Учебная версия API
@@ -37,7 +37,7 @@
 - `python3 manage.py createsuperuser` (по желанию, чтоб управлять через админку)
 - `python3 manage.py loaddata fixtures.json` - (по желанию, заполняет тестовыми данными базу данных)
 
-Сервис будет доступен по адресу 127.0.0.1:8000
+Сервис будет доступен по основному IP адресу сайта
 
-Админка 127.0.0.1:8000/admin
+Админка _IP-adress_/admin
 
