@@ -63,7 +63,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           #passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
           script: |
-            sudo apt install docker.io && sudo apt install docker-compose
+            sudo apt install -y docker.io && sudo apt install -y docker-compose
             sudo docker-compose up
           # Если это первый деплой на новую машину 1) установить на ней Docker 2) зачачать образ, запустить контейнер (!) с именем.
 
