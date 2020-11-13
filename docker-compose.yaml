@@ -1,0 +1,49 @@
+version: '2'
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  nginx_network:
+    driver: bridge
+  database_network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:13.0
+    container_name: ymdb_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    networks:
+      - database_network
+
+  web:
+    build: .
+    container_name: ymdb_web
+    restart: always
+    volumes:
+      - static_volume:/code/static
+    command: gunicorn api_yamdb.wsgi:application --workers=3 --bind 0.0.0.0:8000
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    networks:
+      - nginx_network
+      - database_network
+
+  nginx:
+    build: ./nginx
+    container_name: ymdb_nginx
+    volumes:
+      - static_volume:/code/static
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    networks:
+      - nginx_network
