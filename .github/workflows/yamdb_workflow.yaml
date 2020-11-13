@@ -62,10 +62,11 @@ jobs:
           username: ${{ secrets.TEST_HOST_ADMIN }}
           key: ${{ secrets.SSH_KEY }}
           #passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
-          compose-file: docker-compose.yaml
           script: |
-            sudo apt install -y docker.io && sudo apt install -y docker-compose
-            sudo docker-compose up
+            sudo apt install -y docker.io docker-compose git
+            git clone https://github.com/mechotech/yamdb_final && cd yamdb_final
+            if [ ! -f .env ]; then cp .env.example .env; fi
+            sudo docker-compose up -d
           # Если это первый деплой на новую машину 1) установить на ней Docker 2) зачачать образ, запустить контейнер (!) с именем.
 
   send_message:
