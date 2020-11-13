@@ -3,57 +3,57 @@ name: YAMDB-final
 on: [push]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        pip install -r requirements.txt
-
-    - name: Lint with flake8
-      run: flake8 .
-
-    - name: Test with pytest
-      run: pytest
-
-  build_and_push_to_docker_hub:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    needs: tests
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push to Docker Hub
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          tags: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.MY_APP }}:latest
-          load: true
-      - run: docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.MY_APP }}:latest
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#  tests:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set up Python
+#      uses: actions/setup-python@v2
+#      with:
+#        python-version: 3.8
+#
+#    - name: Install dependencies
+#      run: |
+#        python -m pip install --upgrade pip
+#        pip install flake8 pytest
+#        pip install -r requirements.txt
+#
+#    - name: Lint with flake8
+#      run: flake8 .
+#
+#    - name: Test with pytest
+#      run: pytest
+#
+#  build_and_push_to_docker_hub:
+#    name: Push Docker image to Docker Hub
+#    runs-on: ubuntu-latest
+#    needs: tests
+#    steps:
+#      - name: Check out the repo
+#        uses: actions/checkout@v2
+#
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Push to Docker Hub
+#        id: docker_build
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: .
+#          tags: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.MY_APP }}:latest
+#          load: true
+#      - run: docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.MY_APP }}:latest
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build_and_push_to_docker_hub
+    #needs: build_and_push_to_docker_hub
     steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@v0.1.3
@@ -62,6 +62,7 @@ jobs:
           username: ${{ secrets.TEST_HOST_ADMIN }}
           key: ${{ secrets.SSH_KEY }}
           #passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
+          compose-file: docker-compose.yaml
           script: |
             sudo apt install -y docker.io && sudo apt install -y docker-compose
             sudo docker-compose up
