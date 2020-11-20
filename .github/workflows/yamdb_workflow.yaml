@@ -63,7 +63,7 @@ jobs:
         with:
           host: ${{ secrets.TEST_HOST }}
           username: ${{ secrets.TEST_HOST_ADMIN }}
-          key: ${{ secrets.SSH_KEY }
+          key: ${{ secrets.SSH_KEY }}
           MY_ENV: ${{ secrets.ENV }}
           script: |
             sudo test -e yamdb_final || sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
