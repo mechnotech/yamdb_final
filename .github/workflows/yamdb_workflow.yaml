@@ -73,6 +73,8 @@ jobs:
             sudo git pull && sudo git checkout -b master
             sudo touch .env && echo "$MY_ENV" | sudo tee .env
             sudo docker-compose up -d --remove-orphans --force-recreate
+            sudo docker cp .env ymdb_web:/code/
+            sudo docker exec -t ymdb_web python3 manage.py migrate
             sudo docker exec -t ymdb_web python3 manage.py collectstatic --no-input
 
   send_message:
