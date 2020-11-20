@@ -60,12 +60,12 @@ jobs:
     steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@v0.1.3
+        env:
+         MY_ENV: ${{ secrets.ENV }}
         with:
           host: ${{ secrets.TEST_HOST }}
           username: ${{ secrets.TEST_HOST_ADMIN }}
-          key: ${{ secrets.SSH_KEY }}
-          env:
-            MY_ENV: ${{ secrets.ENV }}
+          key: ${{ secrets.SSH_KEY }
           script: |
             sudo test -e yamdb_final || sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
             cd yamdb_final
