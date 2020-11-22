@@ -26,6 +26,7 @@ jobs:
       run: pytest
 
   build_and_push_to_docker_hub:
+    if: contains(github.ref, 'master')
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
@@ -55,9 +56,22 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
   deploy:
+    if: contains(github.ref, 'master')
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
     steps:
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: transfer nginx conf file to deploy server
+        uses: appleboy/scp-action@v0.0.10
+        with:
+            host: ${{ secrets.TEST_HOST }}
+            username: ${{ secrets.TEST_HOST_ADMIN }}
+            key: ${{ secrets.SSH_KEY }}
+            source: "nginx/default.conf,docker-compose.yaml"
+            target: "/home/mech/yamdb_final/nginx/"
+
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@v0.1.3
         env:
@@ -68,17 +82,16 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: MY_ENV
           script: |
-            sudo test -e yamdb_final || sudo git clone https://github.com/${{ secrets.DOCKER_REGISTRY }}/yamdb_final
             cd yamdb_final
-            sudo git pull && sudo git checkout -b master
+            mv ./nginx/docker-compose.yaml .
             sudo touch .env && echo "$MY_ENV" | sudo tee .env
             sudo docker-compose up -d --remove-orphans --force-recreate
             sudo docker cp .env ymdb_web:/code/
             sudo docker exec -t ymdb_web python3 manage.py migrate
-            sudo docker exec -t ymdb_web python3 manage.py makemigrations
             sudo docker exec -t ymdb_web python3 manage.py collectstatic --no-input
 
   send_message:
+    if: contains(github.ref, 'master')
     runs-on: ubuntu-latest
     needs: deploy
     steps:

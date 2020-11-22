@@ -69,6 +69,7 @@ jobs:
             host: ${{ secrets.TEST_HOST }}
             username: ${{ secrets.TEST_HOST_ADMIN }}
             key: ${{ secrets.SSH_KEY }}
+            strip_components: 1
             source: "nginx/default.conf,docker-compose.yaml"
             target: "/home/mech/yamdb_final/nginx/"
 
