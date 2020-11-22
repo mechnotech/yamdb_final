@@ -83,6 +83,7 @@ jobs:
           envs: MY_ENV
           script: |
             cd yamdb_final
+            mv /nginx/docker-compose.yaml .
             sudo touch .env && echo "$MY_ENV" | sudo tee .env
             sudo docker-compose up -d --remove-orphans --force-recreate
             sudo docker cp .env ymdb_web:/code/
