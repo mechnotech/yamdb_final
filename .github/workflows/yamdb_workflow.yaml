@@ -62,7 +62,7 @@ jobs:
     steps:
       - name: transfer nginx conf file to deploy server
         uses: appleboy/scp-action@master
-          with:
+        with:
             host: ${{ secrets.TEST_HOST }}
             username: ${{ secrets.TEST_HOST_ADMIN }}
             key: ${{ secrets.SSH_KEY }}
