@@ -44,8 +44,8 @@ services:
         source: static_volume
         target: /code/static
       - type: bind
-        source: $PWD/nginx/local.conf
-        target: /etc/nginx/conf.d/default.conf
+        source: $PWD/nginx/
+        target: /etc/nginx/conf.d/
     ports:
       - 80:80
     depends_on:
