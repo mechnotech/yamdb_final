@@ -44,7 +44,7 @@ services:
         source: static_volume
         target: /code/static
       - type: bind
-        source: ./nginx/
+        source: ./nginx/nginx/
         target: /etc/nginx/conf.d/
     ports:
       - 80:80
